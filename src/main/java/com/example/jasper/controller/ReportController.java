@@ -39,7 +39,7 @@ public class ReportController {
         file.createNewFile();
 
         try {
-            File reportFile = new File(getClass().getClassLoader().getResource("report/test.jrxml").toURI());
+            File reportFile = new ClassPathResource("report/test.jrxml").getFile();
             JasperReport report = JasperCompileManager.compileReport(JRXmlLoader.load(reportFile));
             JasperPrint print = JasperFillManager.fillReport(report, new HashMap<>(), data);
             JasperExportManager.exportReportToPdfFile(print, file.getName());
