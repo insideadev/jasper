@@ -3,6 +3,7 @@ package com.example.jasper.controller;
 import com.example.jasper.dto.ReportRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import net.sf.jasperreports.engine.DefaultJasperReportsContext;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -39,8 +40,8 @@ public class ReportController {
         file.createNewFile();
 
         try {
-            File reportFile = new ClassPathResource("report/test.jrxml").getFile();
-            JasperReport report = JasperCompileManager.compileReport(JRXmlLoader.load(reportFile));
+            InputStream inputStream = getClass().getResourceAsStream("/report/test.jrxml");
+            JasperReport report = JasperCompileManager.compileReport(JRXmlLoader.load(DefaultJasperReportsContext.getInstance(), inputStream));
             JasperPrint print = JasperFillManager.fillReport(report, new HashMap<>(), data);
             JasperExportManager.exportReportToPdfFile(print, file.getName());
         } catch (Exception e) {
